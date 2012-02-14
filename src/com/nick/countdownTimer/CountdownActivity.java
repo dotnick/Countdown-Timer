@@ -22,6 +22,7 @@ public class CountdownActivity extends Activity   {
 	
 	
 	public void onCreate(Bundle savedInstanceState) {
+		
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.countdown);
 	        countdown_text = (TextView) findViewById(R.id.countdown_text);
@@ -32,15 +33,12 @@ public class CountdownActivity extends Activity   {
 	         seconds = getIntent().getIntExtra("seconds", 0);
 	        
 	        long  time = ((hours * 60 * 60 * 1000) + (minutes * 60 * 1000) + (seconds*1000));
-	      
-	      
-       
-	        countdown = new Timer(time,1000);
+
+	        countdown = new Timer(time,1000, this);
 	        timerFinished = false;
+	        
 	        countdown.start();
-	        
-	        
-	        
+	         
 	        finishButton.setOnClickListener(new View.OnClickListener() {
 
 				@Override
@@ -51,11 +49,8 @@ public class CountdownActivity extends Activity   {
 						end();
 				}	
 	        });
-	        
-	        
-	        
 		}
-	
+
 	@Override
 	public void onBackPressed() {
 		if(!timerFinished){
@@ -69,7 +64,6 @@ public class CountdownActivity extends Activity   {
 	public void confirmCancel(){
 		AlertDialog.Builder confirmation = new AlertDialog.Builder(this);
 	    confirmation.setMessage("Are you sure you want to cancel the countdown?")
-	           .setCancelable(false)
 	           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 	               public void onClick(DialogInterface dialog, int id) {
 	                    end();
@@ -86,7 +80,11 @@ public class CountdownActivity extends Activity   {
 	
 	private void end(){
 		countdown.cancel();
+		Timer.r.stop();
+		Timer.v.cancel();
 		finish();
+		
+		
 	}
 }
 

@@ -1,12 +1,22 @@
 package com.nick.countdownTimer;
 
+import android.content.Context;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.CountDownTimer;
+import android.os.Vibrator;
 
 public class Timer extends CountDownTimer{
 	
-	public Timer(long millisInFuture, long countDownInterval) {
-			super(millisInFuture, countDownInterval);
+	public static Ringtone r;
+	public static Vibrator v;
+	private static int HELLO_ID = MainActivity.HELLO_ID;
+	private Context mContext;
 	
+	public Timer(long millisInFuture, long countDownInterval, Context mContext) {
+			super(millisInFuture, countDownInterval);
+			this.mContext = mContext;
 	}
 	
 	@Override
@@ -15,10 +25,14 @@ public class Timer extends CountDownTimer{
 		CountdownActivity.finishButton.setText("Ok");
 		CountdownActivity.timerFinished = true;
 		
-		 
-		// TODO: Fix Vibration
-		//notifyFinished notifier = new notifyFinished();
-}
+		v = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
+		final long[] pattern = {1,300,75,300,75,300,75,300,3000,300,75,300,75,300,75,300};
+		v.vibrate(pattern, -1);
+		MainActivity.mNotificationManager.cancel(HELLO_ID);
+		Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+		r = RingtoneManager.getRingtone(mContext, notification);
+		r.play();
+	}
 	
 	@Override
 	public void onTick(long millisUntilFinished) {
