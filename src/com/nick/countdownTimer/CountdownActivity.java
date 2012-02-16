@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CountdownActivity extends Activity   {
 	
@@ -19,6 +20,7 @@ public class CountdownActivity extends Activity   {
 	
 	public static boolean timerFinished;
 	private Timer countdown = null;
+	private static int HELLO_ID = MainActivity.HELLO_ID;
 	
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,7 @@ public class CountdownActivity extends Activity   {
 	         minutes = getIntent().getIntExtra("minutes", 0);
 	         seconds = getIntent().getIntExtra("seconds", 0);
 	        
-	        long  time = ((hours * 60 * 60 * 1000) + (minutes * 60 * 1000) + (seconds*1000));
+	        long  time = ((hours * 60 * 60 * 1000) + (minutes * 60 * 1000) + (seconds * 1000));
 
 	        countdown = new Timer(time,1000, this);
 	        timerFinished = false;
@@ -80,11 +82,16 @@ public class CountdownActivity extends Activity   {
 	
 	private void end(){
 		countdown.cancel();
-		Timer.r.stop();
-		Timer.v.cancel();
+		
+		if(timerFinished) {
+			Timer.r.stop();
+			Timer.v.cancel();
+		} else {
+			Toast.makeText(CountdownActivity.this, "Timer cancelled", Toast.LENGTH_SHORT).show();
+		}
+		
+		MainActivity.mNotificationManager.cancel(HELLO_ID);
 		finish();
-		
-		
 	}
 }
 
