@@ -38,51 +38,57 @@ public class MainActivity extends Activity {
       startButton.setOnClickListener(new View.OnClickListener() {
     
     	  public void onClick(View v) {
-		  
-    		  Intent startCountdown = new Intent(MainActivity.this, CountdownActivity.class);
+    		  if(!(hoursBox.getText().toString().equals("") 
+    				  && minutesBox.getText().toString().equals("")
+    				  && secondsBox.getText().toString().equals(""))) {
+    			  
+    		  
+    			  Intent startCountdown = new Intent(MainActivity.this, CountdownActivity.class);
 			
-    		  startCountdown.putExtra("hours", hours);
-    		  startCountdown.putExtra("minutes", minutes);
-    		  startCountdown.putExtra("seconds", seconds);
+    			  startCountdown.putExtra("hours", hours);
+    			  startCountdown.putExtra("minutes", minutes);
+    			  startCountdown.putExtra("seconds", seconds);
 		   
-    		  if(hoursBox.getText().toString().equals(""))
-    			  hoursBox.setText("0");
+    			  if(hoursBox.getText().toString().equals(""))
+    				  hoursBox.setText("0");
 		    
-    		  if(minutesBox.getText().toString().equals(""))
-    			  minutesBox.setText("0");
+    			  if(minutesBox.getText().toString().equals(""))
+    				  minutesBox.setText("0");
 		    
-    		  if(secondsBox.getText().toString().equals(""))
-    			  secondsBox.setText("0");
+    			  if(secondsBox.getText().toString().equals(""))
+    				  secondsBox.setText("0");
 				    		
-    		  hours = Integer.parseInt(hoursBox.getText().toString());
-    		  minutes = Integer.parseInt(minutesBox.getText().toString());	
-    		  seconds = Integer.parseInt(secondsBox.getText().toString());
+    			  hours = Integer.parseInt(hoursBox.getText().toString());
+    			  minutes = Integer.parseInt(minutesBox.getText().toString());	
+    			  seconds = Integer.parseInt(secondsBox.getText().toString());
 		    
-    		  startCountdown.putExtra("hours", hours);
-    		  startCountdown.putExtra("minutes", minutes);
-    		  startCountdown.putExtra("seconds", seconds);
+    			  startCountdown.putExtra("hours", hours);
+    			  startCountdown.putExtra("minutes", minutes);
+    			  startCountdown.putExtra("seconds", seconds);
 	   	
-    		  String ns = Context.NOTIFICATION_SERVICE;
-    		  mNotificationManager = (NotificationManager) getSystemService(ns);
-    		  CharSequence tickerText = "Timer active.";
-    		  int icon = R.drawable.logo;
+    			  String ns = Context.NOTIFICATION_SERVICE;
+    			  mNotificationManager = (NotificationManager) getSystemService(ns);
+    			  CharSequence tickerText = "Timer active.";
+    			  int icon = R.drawable.logo;
         
-    		  long when = System.currentTimeMillis();
+    			  long when = System.currentTimeMillis();
 
-    		  Notification notification = new Notification(icon, tickerText, when);
+    			  Notification notification = new Notification(icon, tickerText, when);
         
-    		  CharSequence contentTitle = "Countdown Timer";
-    		  CharSequence contentText = "Timer activated.";
-    		  Intent notificationIntent = new Intent(MainActivity.this, CountdownActivity.class);
-    		  PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, 0, notificationIntent, HELLO_ID);
-    		  notification.setLatestEventInfo(MainActivity.this, contentTitle, contentText, pIntent);
-    		  notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    			  CharSequence contentTitle = "Countdown Timer";
+    			  CharSequence contentText = "Timer activated.";
+    			  Intent notificationIntent = new Intent(MainActivity.this, CountdownActivity.class);
+    			  PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, 0, notificationIntent, HELLO_ID);
+    			  notification.setLatestEventInfo(MainActivity.this, contentTitle, contentText, pIntent);
+    			  notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         
-    		  mNotificationManager.notify(HELLO_ID, notification);
+    			  mNotificationManager.notify(HELLO_ID, notification);
         
-    		  startActivity(startCountdown);
+    			  startActivity(startCountdown);
+    		  }
     	  }
-      	});
+    	 });
+      
     }
     
     protected void onResume(){
