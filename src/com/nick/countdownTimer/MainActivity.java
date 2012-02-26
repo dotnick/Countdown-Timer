@@ -37,13 +37,14 @@ public class MainActivity extends Activity {
 	  secondsPicker = (NumberPicker) findViewById(R.id.secondsPicker);
 	  Button startButton = (Button) findViewById(R.id.startButton);
 	  
-	  hoursPicker.setMinValue(0);
 	  hoursPicker.setMaxValue(23);
+	  hoursPicker.setOnLongPressUpdateInterval(100);
 	  hoursPicker.setFocusableInTouchMode(true);
-	  minutesPicker.setMinValue(00);
 	  minutesPicker.setMaxValue(59);
-	  secondsPicker.setMinValue(00);
+	  minutesPicker.setOnLongPressUpdateInterval(100);
 	  secondsPicker.setMaxValue(59);
+	  secondsPicker.setOnLongPressUpdateInterval(100);
+	  
 	  
       startButton.setOnClickListener(new View.OnClickListener() {
     
@@ -63,7 +64,7 @@ public class MainActivity extends Activity {
 	   	
     			  String ns = Context.NOTIFICATION_SERVICE;
     			  mNotificationManager = (NotificationManager) getSystemService(ns);
-    			  CharSequence tickerText = "Timer active.";
+    			  CharSequence tickerText = "Timer active";
     			  int icon = R.drawable.logo;
         
     			  long when = System.currentTimeMillis();
@@ -71,7 +72,7 @@ public class MainActivity extends Activity {
     			  Notification notification = new Notification(icon, tickerText, when);
         
     			  CharSequence contentTitle = "Countdown Timer";
-    			  CharSequence contentText = "Timer activated.";
+    			  CharSequence contentText = "Timer active";
     			  Intent notificationIntent = new Intent(MainActivity.this, CountdownActivity.class);
     			  PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, 0, notificationIntent, HELLO_ID);
     			  notification.setLatestEventInfo(MainActivity.this, contentTitle, contentText, pIntent);
