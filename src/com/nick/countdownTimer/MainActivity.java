@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.NumberPicker;
 
 public class MainActivity extends Activity {
 	
@@ -18,49 +18,44 @@ public class MainActivity extends Activity {
 	private int minutes;
 	private int seconds;
 	
-	private EditText hoursBox;
-	private EditText minutesBox;
-	private EditText secondsBox;
+	private NumberPicker hoursPicker;
+	private NumberPicker minutesPicker;
+	private NumberPicker secondsPicker;
 	
 	public static NotificationManager mNotificationManager;
 	public static int HELLO_ID = 1;
 	
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	
       super.onCreate(savedInstanceState);
       setContentView(R.layout.main);
-        
-      hoursBox = (EditText) findViewById(R.id.hoursBox);
-      minutesBox = (EditText) findViewById(R.id.minutesBox);
-	  secondsBox = (EditText) findViewById(R.id.secondsBox);
-      Button startButton = (Button) findViewById(R.id.startButton);
-       
+          
+      hoursPicker = (NumberPicker) findViewById(R.id.hoursPicker);
+      minutesPicker = (NumberPicker) findViewById(R.id.minutesPicker);
+	  secondsPicker = (NumberPicker) findViewById(R.id.secondsPicker);
+	  Button startButton = (Button) findViewById(R.id.startButton);
+	  
+	  hoursPicker.setMinValue(0);
+	  hoursPicker.setMaxValue(23);
+	  hoursPicker.setFocusableInTouchMode(true);
+	  minutesPicker.setMinValue(00);
+	  minutesPicker.setMaxValue(59);
+	  secondsPicker.setMinValue(00);
+	  secondsPicker.setMaxValue(59);
+	  
       startButton.setOnClickListener(new View.OnClickListener() {
     
     	  public void onClick(View v) {
-    		  if(!(hoursBox.getText().toString().equals("") 
-    				  && minutesBox.getText().toString().equals("")
-    				  && secondsBox.getText().toString().equals(""))) {
-    			  
     		  
+    		  hours = hoursPicker.getValue();
+			  minutes = minutesPicker.getValue();	
+			  seconds = secondsPicker.getValue();
+    		  
+    		  if(!(hours == 0 && minutes == 0 && seconds == 0)) {
+    			  
     			  Intent startCountdown = new Intent(MainActivity.this, CountdownActivity.class);
-			
-    			  startCountdown.putExtra("hours", hours);
-    			  startCountdown.putExtra("minutes", minutes);
-    			  startCountdown.putExtra("seconds", seconds);
-		   
-    			  if(hoursBox.getText().toString().equals(""))
-    				  hoursBox.setText("0");
-		    
-    			  if(minutesBox.getText().toString().equals(""))
-    				  minutesBox.setText("0");
-		    
-    			  if(secondsBox.getText().toString().equals(""))
-    				  secondsBox.setText("0");
-				    		
-    			  hours = Integer.parseInt(hoursBox.getText().toString());
-    			  minutes = Integer.parseInt(minutesBox.getText().toString());	
-    			  seconds = Integer.parseInt(secondsBox.getText().toString());
 		    
     			  startCountdown.putExtra("hours", hours);
     			  startCountdown.putExtra("minutes", minutes);
@@ -92,11 +87,8 @@ public class MainActivity extends Activity {
     }
     
     protected void onResume(){
-  
+
     	super.onResume();
     	
-    	hoursBox.setText("");
-    	minutesBox.setText("");
-    	secondsBox.setText("");
     }
 }
