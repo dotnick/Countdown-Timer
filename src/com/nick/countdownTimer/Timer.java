@@ -1,16 +1,20 @@
 package com.nick.countdownTimer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.CountDownTimer;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
 
 public class Timer extends CountDownTimer{
 	
 	public static Ringtone r;
 	public static Vibrator v;
+	private PowerManager pm;
 	private static int HELLO_ID = MainActivity.HELLO_ID;
 	private Context mContext;
 	
@@ -21,17 +25,31 @@ public class Timer extends CountDownTimer{
 	
 	@Override
 	public void onFinish() {
+		
+		Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+		v = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
+		r = RingtoneManager.getRingtone(mContext, notification);
+		pm = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+		WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK|PowerManager.ACQUIRE_CAUSES_WAKEUP, "Countdown Timer");
+		final long[] pattern = {1,300,75,300,75,300,75,300,3000,300,75,300,75,300,75,300};
+		
+		
+		Intent TimerFinishedDialog = new Intent(mContext,TimerFinishedDialog.class);
+		TimerFinishedDialog.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		TimerFinishedDialog.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		CountdownActivity.countdown_text.setText("Finished.");
 		CountdownActivity.finishButton.setText("Ok");
 		CountdownActivity.timerFinished = true;
 		
-		v = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
-		final long[] pattern = {1,300,75,300,75,300,75,300,3000,300,75,300,75,300,75,300};
-		v.vibrate(pattern, -1);
+		wl.acquire(5000);
+	
+		mContext.getApplicationContext().startActivity(TimerFinishedDialog);
 		MainActivity.mNotificationManager.cancel(HELLO_ID);
-		Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-		r = RingtoneManager.getRingtone(mContext, notification);
+
+		v.vibrate(pattern, -1);		
 		r.play();
+		
+		//wl.release();
 	}
 	
 	@Override
