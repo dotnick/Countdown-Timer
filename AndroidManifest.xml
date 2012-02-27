@@ -6,6 +6,7 @@
 
     <uses-sdk android:minSdkVersion="10" />
 	<uses-permission android:name="android.permission.VIBRATE"/>
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
     
     <application
         android:icon="@drawable/logo"
@@ -27,6 +28,15 @@
            android:name=".CountdownActivity" 
            android:launchMode="singleTop" >
         </activity>
+        
+        <activity 
+            android:name=".TimerFinishedDialog" 
+            android:theme="@android:style/Theme.Dialog" 
+            android:launchMode="singleInstance" 
+            android:excludeFromRecents="true"
+ 		 	android:taskAffinity="" >
+        </activity>
+        
     </application>
 
 </manifest>
