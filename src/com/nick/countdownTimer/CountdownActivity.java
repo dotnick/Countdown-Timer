@@ -80,7 +80,8 @@ public class CountdownActivity extends Activity   {
 	    alert.show();
 	}
 	
-	private void end(){
+	public void end() {
+		
 		countdown.cancel();
 		
 		if(timerFinished) {

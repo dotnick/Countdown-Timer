@@ -41,7 +41,7 @@ public class Timer extends CountDownTimer{
 		CountdownActivity.finishButton.setText("Ok");
 		CountdownActivity.timerFinished = true;
 		
-		wl.acquire(5000);
+		wl.acquire();
 	
 		mContext.getApplicationContext().startActivity(TimerFinishedDialog);
 		MainActivity.mNotificationManager.cancel(HELLO_ID);
@@ -49,7 +49,8 @@ public class Timer extends CountDownTimer{
 		v.vibrate(pattern, -1);		
 		r.play();
 		
-		//wl.release();
+		wl.release();
+
 	}
 	
 	@Override
